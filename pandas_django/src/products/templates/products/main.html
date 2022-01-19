@@ -3,10 +3,42 @@
 {% block title %}performance{% endblock title %}
 
 {% block content %}
-<h1>Hello World!</h1>
-{{ products | safe }}
+{% if df %}
+  {{ df | safe }}
+{% endif %}
 <hr>
-{{ purchese | safe }}
-<hr>
-{{ dataframe | safe }}
+<div>
+  {% if error_message %}
+    {{ error_message }}
+  {% endif %}
+  <form action="" method="POST" class="ui form">
+  {% csrf_token %}
+    <div class="field">
+      <label>Choose a chart type:</label>
+      <div class="ui selection dropdown">
+        <input type="hidden" name="sales">
+        <i class="dropdown icon"></i>
+        <div class="default text">---</div>
+        <div class="menu">
+          <div class="item" data-value="bar">Bar plot</div>
+          <div class="item" data-value="line">Line plot</div>
+          <div class="item" data-value="count">count plot</div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="two fields">
+        <div class="field">
+          <label>Date from:</label>
+          <input type="date" name="date_from">
+        </div>
+        <div class="field">
+          <label>Date to:</label>
+          <input type="date" name="date_to">
+        </div>
+      </div>
+    </div>
+    <button class="ui primary button" type="submit">Select</button>
+  </form>
+</div>
 {% endblock content %}
