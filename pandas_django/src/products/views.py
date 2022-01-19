@@ -18,11 +18,17 @@ def chart_select_view(request):
             chart_type = request.POST.get('sales')
             date_from = request.POST['date_from']
             date_to = request.POST['date_to']
-            print(df['date'])
+
             df['date'] = df['date'].apply(lambda x: x.strftime('%Y-%m-%d'))
-            print(df['date'])
             df2 = df.groupby('date', as_index=False)['total_price'].agg('sum')
-            print(df2)
+            
+            if chart_type != "":
+                if date_from != "" and date_to != "":
+                    df = df[(df['date']>date_from) & (df['date']<date_to)]
+                    df2 = df.groupby('date', as_index=False)['total_price'].agg('sum')
+                #TODO: function to get a gragh
+            else:
+                error_message = "Please select a chart type to continue"
 
     else:
         error_message = "No records in database"
