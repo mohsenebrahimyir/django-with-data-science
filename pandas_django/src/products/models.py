@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Product(models.Model):
     name = models.CharField(max_length=220)
@@ -16,7 +17,7 @@ class Purchese(models.Model):
     total_price = models.PositiveSmallIntegerField(blank=True)
     salesman = models.ForeignKey(User, on_delete=models.CASCADE)
     #TODO:  change required
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
     
     def save(self, *args, **kwargs):
         self.total_price = self.price * self.quentity
