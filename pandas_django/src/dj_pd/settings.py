@@ -54,7 +54,7 @@ ROOT_URLCONF = 'dj_pd.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,6 +118,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static_project",
+    # "/var/www/static/"
+]
+STATIC_ROOT = BASE_DIR / '../static_cdn' / 'static_root'
+# STATIC_ROOT = "/var/www/example.com/static/"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / '../static_cdn' / 'media_root'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
