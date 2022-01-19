@@ -1,0 +1,60 @@
+{% url 'home' as path_to_home %}
+{% url 'login' as path_to_login %}
+{% url 'logout' as path_to_logout %}
+{% url 'products:main-products-view' as path_to_performance %}
+{% url 'products:add-purchase-view' as path_to_adding_records %}
+{% url 'csvs:upload-view' as path_to_upload %}
+{% url 'customers:main-customers-view' as path_to_customers %}
+{% url 'products:sales-view' as path_to_sales %}
+
+
+<div class="ui secondary pointing menu">
+  <a href={{path_to_home}} class="{% if request.path == path_to_home%}active{% endif %} item">
+    Home
+  </a>
+  {% if request.user.is_authenticated %}
+  <a href={{path_to_performance}} class="{% if request.path == path_to_performance%}active{% endif %} item">
+    Performance
+  </a>
+  <a href={{path_to_sales}} class="{% if request.path == path_to_sales%}active{% endif %} item">
+    Sales
+  </a>
+  <a href={{path_to_customers}} class="item {% if request.path == path_to_customers%}active{% endif %}">
+    Customers
+  </a>
+  <a href={{path_to_adding_records}} class="item {% if request.path == path_to_adding_records%}active{% endif %}">
+    Add records
+  </a>
+   <a href={{path_to_upload}} class="item {% if request.path == path_to_upload%}active{% endif %}">
+    Upload file
+  </a>
+  <div class="right menu">
+     <a href={{path_to_logout}} class="ui item {% if request.path == path_to_logout%}active{% endif %}">
+      Logout
+    </a>
+  </div>
+  {% else %}
+   <div class="right menu">
+    <a href={{path_to_login}} class="ui item {% if request.path == path_to_login%}active{% endif %}">
+      Login
+    </a>
+  </div>
+  {% endif %}
+</div>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:xd_Signature msdt:dt="string"></mso:xd_Signature>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">Dwayne D'souza</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:Order msdt:dt="string">154100.000000000</mso:Order>
+<mso:ComplianceAssetId msdt:dt="string"></mso:ComplianceAssetId>
+<mso:TemplateUrl msdt:dt="string"></mso:TemplateUrl>
+<mso:xd_ProgID msdt:dt="string"></mso:xd_ProgID>
+<mso:SharedWithUsers msdt:dt="string"></mso:SharedWithUsers>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">Dwayne D'souza</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:ContentTypeId msdt:dt="string">0x0101001A311398CD70F7498EA063578BEDA974</mso:ContentTypeId>
+<mso:_SourceUrl msdt:dt="string"></mso:_SourceUrl>
+<mso:_SharedFileIndex msdt:dt="string"></mso:_SharedFileIndex>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+<title></title></head>
