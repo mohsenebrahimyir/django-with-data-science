@@ -3,13 +3,36 @@
 {% block title %}performance{% endblock title %}
 
 {% block content %}
-{% if df %}
-  {{ df | safe }}
-{% endif %}
-<hr>
+<div class="ui modal mymodal">
+  <div class="header">Price data</div>
+  <div class="ui container">
+    <ul>
+      <li><strong>Count:</strong> {{ price.count | floatformat }}</li>
+      <li><strong>Mean:</strong> {{ price.mean | floatformat }}</li>
+      <li><strong>Median:</strong> {{ price.median | floatformat }}</li>
+      <li><strong>Min:</strong> {{ price.min | floatformat }}</li>
+      <li><strong>Max:</strong> {{ price.max | floatformat }}</li>
+      <li><strong>Std Dev:</strong> {{ price.std | floatformat }}</li>
+    </ul>
+  </div>
+</div>
 <div>
   {% if error_message %}
-    {{ error_message }}
+    <div class="ui negative message">
+      <i class="close icon"></i>
+      <div class="header">
+        {{ error_message }}
+      </div>
+    </div>
+  {% endif %}
+  {% if request.POST %}
+    {% if graph %}
+      <div class="ui black message">
+        <center>
+          <img src="data:image/png;base64, {{ graph | safe }}">
+        <center>  
+      </div>
+    {% endif %}
   {% endif %}
   <form action="" method="POST" class="ui form">
   {% csrf_token %}
@@ -38,7 +61,8 @@
         </div>
       </div>
     </div>
-    <button class="ui primary button" type="submit">Select</button>
+    <button class='ui primary button' type='submit'>Select</button>
   </form>
+  <button class="ui secondary button" id='modal-btn'>See Summary</button>
 </div>
 {% endblock content %}
