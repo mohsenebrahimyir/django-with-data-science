@@ -1,9 +1,28 @@
 from django.shortcuts import render
 from .models import *
 import pandas as pd
-from .utils import get_simple_plot
+from .utils import *
 from .forms import *
+import matplotlib.pyplot as plt
+import seaborn as sns
 
+def sales_dist_view(request):
+    df = pd.DataFrame(Purchase.objects.all().values())
+    df['salesman_id'] = df['salesman_id'].apply(get_salesman_from_id)
+    df.rename({'salesman_id': 'salesman'}, axis=1, inplace=True)
+    df['date'] = df['date'].apply(lambda x: x.strftime("%Y-%m-%d"))
+    
+    plt.switch_backend('Agg')
+    plt.xticks(rotation=45)
+    sns.barplot(x='date', y='total_price', hue='salesman', data=df)
+    plt.tight_layout()
+    graph = get_image()
+    
+    context = {
+        'graph': graph,
+    }
+    
+    return render(request, 'products/sales.html', context)
 
 def chart_select_view(request):
     error_message = None
