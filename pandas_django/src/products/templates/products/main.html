@@ -4,65 +4,89 @@
 
 {% block content %}
 <div class="ui modal mymodal">
-  <div class="header">Price data</div>
+  <div class="header"><h1>Price data</h1></div>
   <div class="ui container">
     <ul>
-      <li><strong>Count:</strong> {{ price.count | floatformat }}</li>
-      <li><strong>Mean:</strong> {{ price.mean | floatformat }}</li>
-      <li><strong>Median:</strong> {{ price.median | floatformat }}</li>
-      <li><strong>Min:</strong> {{ price.min | floatformat }}</li>
-      <li><strong>Max:</strong> {{ price.max | floatformat }}</li>
-      <li><strong>Std Dev:</strong> {{ price.std | floatformat }}</li>
+        <li><strong>Count: </strong> {{ price.count }}</li>
+        <li><strong>Mean: </strong> {{ price.mean|floatformat }}</li>
+        <li><strong>Medain: </strong> {{ price.median }}</li>
+        <li><strong>Min: </strong> {{ price.min }}</li>
+        <li><strong>Max: </strong> {{ price.max }}</li>
+        <li><strong>Std dev: </strong> {{ price.std|floatformat }}</li>
     </ul>
   </div>
 </div>
+
 <div>
-  {% if error_message %}
-    <div class="ui negative message">
-      <i class="close icon"></i>
-      <div class="header">
-        {{ error_message }}
-      </div>
+    <div class="block-center">
+        {% if error_message%}
+            <div class="ui negative message">
+                <i class="close icon"></i>
+                <div class="header">
+                    {{ error_message }}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if request.POST %}
+            {% if graph %}
+                <img src="data:image/png;base64, {{ graph | safe}}">
+            {% endif %}
+        {% endif %}
     </div>
-  {% endif %}
-  {% if request.POST %}
-    {% if graph %}
-      <div class="ui black message">
-        <center>
-          <img src="data:image/png;base64, {{ graph | safe }}">
-        <center>  
-      </div>
-    {% endif %}
-  {% endif %}
-  <form action="" method="POST" class="ui form">
-  {% csrf_token %}
-    <div class="field">
-      <label>Choose a chart type:</label>
-      <div class="ui selection dropdown">
-        <input type="hidden" name="sales">
-        <i class="dropdown icon"></i>
-        <div class="default text">---</div>
-        <div class="menu">
-          <div class="item" data-value="bar">Bar plot</div>
-          <div class="item" data-value="line">Line plot</div>
-          <div class="item" data-value="count">count plot</div>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-      <div class="two fields">
+    <form action="" method="POST" class="ui form mtop">
+    {% csrf_token %}
         <div class="field">
-          <label>Date from:</label>
-          <input type="date" name="date_from">
+            <label>Choose a chart type: </label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="sales">
+                <i class="dropdown icon"></i>
+                <div class="default text">----</div>
+                <div class="menu">
+                    <div class="item" value="bar">Bar plot</div>
+                    <div class="item" value="line">Line plot</div>
+                    <div class="item" value="count">Count plot</div>
+                </div>
+            </div>
         </div>
         <div class="field">
-          <label>Date to:</label>
-          <input type="date" name="date_to">
+            <div class="two fields">
+                <div class="field">
+                    <label>Date from: </label>
+                    <input type="date" name="date_from">
+                </div>
+                <div class="field">
+                    <label>Date to: </label>
+                    <input type="date" name="date_to">
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="block-center">
+            <button class='ui primary button' type='submit'>Select</button>
+        </div>
+    </form>
+    <div class="block-center">
+        <button class='ui secondary button' id='modal-btn'>See summary</button>
+        <br>
+        <a href={% url 'products:add-purchase-view'%}><button class='ui positive button'>Add records</button></a>
     </div>
-    <button class='ui primary button' type='submit'>Select</button>
-  </form>
-  <button class="ui secondary button" id='modal-btn'>See Summary</button>
+
 </div>
-{% endblock content %}
+
+{% endblock content %}<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:xd_Signature msdt:dt="string"></mso:xd_Signature>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor msdt:dt="string">Dwayne D'souza</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Editor>
+<mso:Order msdt:dt="string">224600.000000000</mso:Order>
+<mso:ComplianceAssetId msdt:dt="string"></mso:ComplianceAssetId>
+<mso:TemplateUrl msdt:dt="string"></mso:TemplateUrl>
+<mso:xd_ProgID msdt:dt="string"></mso:xd_ProgID>
+<mso:SharedWithUsers msdt:dt="string"></mso:SharedWithUsers>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author msdt:dt="string">Dwayne D'souza</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_Author>
+<mso:ContentTypeId msdt:dt="string">0x0101001A311398CD70F7498EA063578BEDA974</mso:ContentTypeId>
+<mso:_SourceUrl msdt:dt="string"></mso:_SourceUrl>
+<mso:_SharedFileIndex msdt:dt="string"></mso:_SharedFileIndex>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+<title></title></head>

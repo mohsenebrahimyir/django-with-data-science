@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .models import Product, Purchese
+from .models import *
 import pandas as pd
 from .utils import get_simple_plot
+from .forms import *
 
 
 def chart_select_view(request):
@@ -10,13 +11,13 @@ def chart_select_view(request):
     graph = None
     price = None
 
-    purchese_df = pd.DataFrame(Purchese.objects.all().values())
+    purchase_df = pd.DataFrame(Purchase.objects.all().values())
 
-    if purchese_df.size > 0:
+    if purchase_df.size > 0:
         product_df = Product.objects.all().values()
         product_df = pd.DataFrame(product_df).drop(['date'], axis=1)
         product_df = product_df.rename(columns=lambda x: "product_"+x)
-        df = pd.merge(purchese_df, product_df, on="product_id")
+        df = pd.merge(purchase_df, product_df, on="product_id")
         price = df['price']
         if request.method == "POST":
             chart_type = request.POST['sales']
@@ -45,3 +46,22 @@ def chart_select_view(request):
     }
 
     return render(request, "products/main.html", context)
+
+
+def add_purchase_view(request):
+    form = PurchaseForm(request.POST or None)
+    added_message=None
+    
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.salesman = request.user
+        obj.save()
+        
+        form = PurchaseForm()
+        added_message="The purchase has been added"
+    
+    context = {
+        'form': form,
+        'added_message': added_message,
+    }
+    return render(request, 'products/add.html', context)
