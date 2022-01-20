@@ -5,25 +5,28 @@ from .utils import *
 from .forms import *
 import matplotlib.pyplot as plt
 import seaborn as sns
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def sales_dist_view(request):
     df = pd.DataFrame(Purchase.objects.all().values())
     df['salesman_id'] = df['salesman_id'].apply(get_salesman_from_id)
     df.rename({'salesman_id': 'salesman'}, axis=1, inplace=True)
     df['date'] = df['date'].apply(lambda x: x.strftime("%Y-%m-%d"))
-    
+
     plt.switch_backend('Agg')
     plt.xticks(rotation=45)
     sns.barplot(x='date', y='total_price', hue='salesman', data=df)
     plt.tight_layout()
     graph = get_image()
-    
+
     context = {
         'graph': graph,
     }
-    
+
     return render(request, 'products/sales.html', context)
 
+@login_required
 def chart_select_view(request):
     error_message = None
     df = None
@@ -45,13 +48,15 @@ def chart_select_view(request):
 
             df['date'] = df['date'].apply(lambda x: x.strftime('%Y-%m-%d'))
             df2 = df.groupby('date', as_index=False)['total_price'].agg('sum')
-            
+
             if chart_type != "":
                 if date_from != "" and date_to != "":
-                    df = df[(df['date']>date_from) & (df['date']<date_to)]
-                    df2 = df.groupby('date', as_index=False)['total_price'].agg('sum')
-                #TODO: function to get a gragh
-                graph = get_simple_plot(chart_type, x=df2['date'], y=df2['total_price'], data=df)
+                    df = df[(df['date'] > date_from) & (df['date'] < date_to)]
+                    df2 = df.groupby('date', as_index=False)[
+                        'total_price'].agg('sum')
+                # TODO: function to get a gragh
+                graph = get_simple_plot(
+                    chart_type, x=df2['date'], y=df2['total_price'], data=df)
             else:
                 error_message = "Please select a chart type to continue"
 
@@ -66,19 +71,19 @@ def chart_select_view(request):
 
     return render(request, "products/main.html", context)
 
-
+@login_required
 def add_purchase_view(request):
     form = PurchaseForm(request.POST or None)
-    added_message=None
-    
+    added_message = None
+
     if form.is_valid():
         obj = form.save(commit=False)
         obj.salesman = request.user
         obj.save()
-        
+
         form = PurchaseForm()
-        added_message="The purchase has been added"
-    
+        added_message = "The purchase has been added"
+
     context = {
         'form': form,
         'added_message': added_message,
